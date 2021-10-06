@@ -9,10 +9,14 @@
         <entry key="..\:/groupproject2/app/src/main/res/drawable-v24/buttonstart.xml" value="0.12129629629629629" />
         <entry key="..\:/groupproject2/app/src/main/res/drawable-v24/buttonstartselector.xml" value="0.12129629629629629" />
         <entry key="..\:/groupproject2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.11851851851851852" />
+        <entry key="..\:/groupproject2/app/src/main/res/drawable/gifselector.xml" value="0.11851851851851852" />
         <entry key="..\:/groupproject2/app/src/main/res/drawable/ic_banner2.xml" value="0.11851851851851852" />
         <entry key="..\:/groupproject2/app/src/main/res/drawable/ic_img_banner_text.xml" value="0.11851851851851852" />
         <entry key="..\:/groupproject2/app/src/main/res/layout/activity_game.xml" value="0.371875" />
         <entry key="..\:/groupproject2/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/groupproject2/app/src/main/res/layout/activity_score.xml" value="0.20885416666666667" />
+        <entry key="..\:/groupproject2/app/src/main/res/layout/activity_splash_screen.xml" value="0.20885416666666667" />
+        <entry key="..\:/groupproject2/app/src/main/res/layout/splash.xml" value="0.20885416666666667" />
         <entry key="..\:/groupproject2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.12129629629629629" />
         <entry key="..\:/groupprojectactual/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.12129629629629629" />
       </map>
