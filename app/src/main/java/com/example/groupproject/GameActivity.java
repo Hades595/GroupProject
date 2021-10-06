@@ -10,6 +10,17 @@ import android.view.View;
 
 public class GameActivity extends AppCompatActivity {
 
+    //TODO
+    //Implement score
+    //Implement trajectory
+    //Implement gestures and fling
+    //Implement check collision
+    //Implement animation
+
+    private int ballSize = 50;
+    private int targetSize = 60;
+    private int obstacleSize = 65;
+
     public class GraphicsView extends View {
 
         private float width = 0;
@@ -20,6 +31,8 @@ public class GameActivity extends AppCompatActivity {
 
         Ball player;
         Obstacles obstacle1;
+        Obstacles obstacle2;
+        Obstacles obstacle3;
         Target target;
 
         public GraphicsView(Context context){
@@ -34,9 +47,11 @@ public class GameActivity extends AppCompatActivity {
             x = (int) (width/2);
             y = (int) (height/2);
 
-            player = new Ball(x,y,50);
-            obstacle1 = new Obstacles(x, y+200, 50, 2);
-            target = new Target(x, y+500, 50);
+            player = new Ball(x,y+700,ballSize);
+            obstacle1 = new Obstacles(x, y-200, obstacleSize, 2);
+            obstacle2 = new Obstacles(x+300, y-200, obstacleSize, 2);
+            obstacle3 = new Obstacles(x-300, y-200, obstacleSize, 2);
+            target = new Target(x, y-600, targetSize);
 
 
             super.onSizeChanged(w, h, oldw, oldh);
@@ -47,6 +62,8 @@ public class GameActivity extends AppCompatActivity {
             super.onDraw(canvas);
             player.draw(canvas);
             obstacle1.draw(canvas);
+            obstacle2.draw(canvas);
+            obstacle3.draw(canvas);
             target.draw(canvas);
         }
 
