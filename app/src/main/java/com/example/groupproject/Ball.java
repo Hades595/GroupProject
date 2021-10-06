@@ -8,10 +8,10 @@ public class Ball extends Object{
 
     //Player
 
-    private int x;
-    private int y;
-    private int radius;
-    private Paint color = new Paint(Color.BLACK);
+    private final int x;
+    private final int y;
+    private final int radius;
+    private final Paint color = new Paint(Color.BLACK);
 
     public Ball(int x, int y, int radius) {
         super(x, y, radius);

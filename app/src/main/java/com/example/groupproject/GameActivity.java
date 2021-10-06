@@ -19,6 +19,8 @@ public class GameActivity extends AppCompatActivity {
         private int y;
 
         Ball player;
+        Obstacles obstacle1;
+        Target target;
 
         public GraphicsView(Context context){
             super(context);
@@ -33,6 +35,9 @@ public class GameActivity extends AppCompatActivity {
             y = (int) (height/2);
 
             player = new Ball(x,y,50);
+            obstacle1 = new Obstacles(x, y+200, 50, 2);
+            target = new Target(x, y+500, 50);
+
 
             super.onSizeChanged(w, h, oldw, oldh);
         }
@@ -41,10 +46,9 @@ public class GameActivity extends AppCompatActivity {
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             player.draw(canvas);
+            obstacle1.draw(canvas);
+            target.draw(canvas);
         }
-
-
-
 
     }
 
