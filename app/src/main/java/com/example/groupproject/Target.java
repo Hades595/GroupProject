@@ -7,6 +7,9 @@ import android.graphics.Paint;
 public class Target extends Object {
     //What player is aiming to hit
 
+    //TODO
+    //Need to add outline
+
     private final int x;
     private final int y;
     private final int radius;
@@ -17,7 +20,8 @@ public class Target extends Object {
         this.x = x;
         this.y = y;
         this.radius = radius;
-        color.setColor(R.color.teal_200);
+
+        color.setColor(R.color.purple_200);
     }
 
     public void draw(Canvas canvas){

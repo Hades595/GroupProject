@@ -9,7 +9,14 @@ public class Obstacles extends Object {
     //Interaction with the player
     //Can throw them off-course and power ups etc
 
-    //the type of powerup
+    //TODO
+    //Implement 3 different types of obstacles
+        //Travel 2x fast
+        //Make the player bigger
+        //Make the obstacles smaller, not the power up
+    //Getter for type
+
+    //the type of power
     private int type = 0;
     private final int x;
     private final int y;
