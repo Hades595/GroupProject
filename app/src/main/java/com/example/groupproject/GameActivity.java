@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,8 @@ public class GameActivity extends AppCompatActivity {
     //Implement gestures and fling
     //Implement check collision
     //Implement animation
+
+    public static int[] scores = new int[3];
 
     private int ballSize = 50;
     private int targetSize = 60;
@@ -77,12 +80,15 @@ public class GameActivity extends AppCompatActivity {
         //New graphics view for drawing ball
         GraphicsView graphicsView = new GraphicsView(this);
 
+        scores[1] = 50;
+
         //Constraint the graphic layout to the constraint layout
         ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraint_layout_graphics);
         constraintLayout.addView(graphicsView);
 
 
     }
+
 
 
 }
