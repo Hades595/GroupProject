@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class GameActivity extends AppCompatActivity {
@@ -26,6 +29,10 @@ public class GameActivity extends AppCompatActivity {
 
     public class GraphicsView extends View {
 
+        private final GestureDetector gestureDetector;
+
+        String TAG = "TAG_GESTURE";
+
         private float width = 0;
         private float height = 0;
 
@@ -40,7 +47,31 @@ public class GameActivity extends AppCompatActivity {
 
         public GraphicsView(Context context){
             super(context);
+            gestureDetector = new GestureDetector(context, new MyGestureListener());
         }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            if(gestureDetector.onTouchEvent(event)){
+                return true;
+            }
+            return super.onTouchEvent(event);
+        }
+
+        class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                Log.i("TAG", "onDOWN");
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                Log.i("TAG", "onFling");
+                return true;
+            }
+        }
+
 
         @Override
         protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -70,6 +101,7 @@ public class GameActivity extends AppCompatActivity {
             target.draw(canvas);
         }
 
+
     }
 
     @Override
@@ -83,7 +115,7 @@ public class GameActivity extends AppCompatActivity {
         scores[1] = 50;
 
         //Constraint the graphic layout to the constraint layout
-        ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraint_layout_graphics);
+        ConstraintLayout constraintLayout = findViewById(R.id.constraint_layout_graphics);
         constraintLayout.addView(graphicsView);
 
 
