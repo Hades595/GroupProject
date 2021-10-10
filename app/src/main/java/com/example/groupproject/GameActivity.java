@@ -7,6 +7,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -24,6 +26,8 @@ public class GameActivity extends AppCompatActivity {
 
     //For the scores
     public static int[] scores = new int[3];
+    private int currentScore = 0;
+    private Paint textColor = new Paint();
 
     //Constant sizes for the objects
         //I plan to move them to classes, as they make more sense to be there
@@ -66,6 +70,8 @@ public class GameActivity extends AppCompatActivity {
             super(context);
             //Gesture detector
             gestureDetector = new GestureDetector(context, new MyGestureListener());
+            textColor.setColor(Color.WHITE);
+            textColor.setTextSize(120);
         }
 
         @Override
@@ -117,6 +123,8 @@ public class GameActivity extends AppCompatActivity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
+            //Draw the score
+            canvas.drawText(String.valueOf(currentScore), width/2, 200, textColor);
             //Draw the player
             player.draw(canvas);
 
