@@ -22,7 +22,7 @@ public class Obstacles extends Object {
     private final int y;
     private final int radius;
 
-    private final Paint color = new Paint();
+    private Paint color_default = new Paint();
 
     public Obstacles(int x, int y, int radius, int type){
         super(x,y, radius);
@@ -30,11 +30,13 @@ public class Obstacles extends Object {
         this.y = y;
         this.radius = radius;
         this.type = type;
-        color.setColor(R.color.purple_500);
+        //Setting the default_obstacles color from R.color
+            //Will fix later
+        color_default.setColor(Color.argb(255, 64, 212, 164));
     }
 
     public void draw(Canvas canvas){
-        canvas.drawCircle(x, y, radius, color);
+        canvas.drawCircle(x, y, radius, color_default);
     }
 
 }

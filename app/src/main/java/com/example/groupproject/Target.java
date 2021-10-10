@@ -13,7 +13,7 @@ public class Target extends Object {
     private final int x;
     private final int y;
     private final int radius;
-    private final Paint color = new Paint();
+    private final Paint color_default = new Paint();
 
     public Target(int x, int y, int radius) {
         super(x, y, radius);
@@ -21,11 +21,11 @@ public class Target extends Object {
         this.y = y;
         this.radius = radius;
 
-        color.setColor(R.color.purple_200);
+        color_default.setColor(Color.argb(255, 255, 000, 000));
     }
 
     public void draw(Canvas canvas){
-        canvas.drawCircle(x, y, radius, color);
+        canvas.drawCircle(x, y, radius, color_default);
     }
 
 
