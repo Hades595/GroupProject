@@ -22,7 +22,6 @@ public class GameActivity extends AppCompatActivity {
     //Implement trajectory
     //Implement gestures and fling
     //Implement check collision
-    //Implement animation
 
     //For the scores
     public static int[] scores = new int[3];
@@ -84,6 +83,10 @@ public class GameActivity extends AppCompatActivity {
         }
 
         class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
             //Whenever the user pulls down
             @Override
             public boolean onDown(MotionEvent e) {
@@ -94,7 +97,38 @@ public class GameActivity extends AppCompatActivity {
             //Whenever the user flings
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                Log.i("TAG", "onFling");
+                Log.i(TAG, "onFling");
+                Log.i(TAG, "onFling velocity x: " + velocityX);
+                Log.i(TAG, "onFling velocity y: " + velocityY);
+
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            //Swipe right
+                            increaseXby = 10;
+                            increaseYby = 0;
+                        } else {
+                            //Swipe left
+                            increaseXby = -10;
+                            increaseYby = 0;
+                        }
+                    }
+                }
+                else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffY > 0) {
+                        //Swipe bottom
+                        increaseXby = 0;
+                        increaseYby = 10;
+                    } else {
+                        //Swipe top
+                        increaseXby = 0;
+                        increaseYby = -10;
+
+                    }
+                }
+
                 return true;
             }
         }
