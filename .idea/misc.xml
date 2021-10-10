@@ -21,6 +21,8 @@
         <entry key="..\:/groupprojectactual/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.12129629629629629" />
         <entry key="app/src/main/res/layout/activity_game.xml" value="0.16259057971014493" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.18659420289855072" />
+        <entry key="app/src/main/res/layout/activity_score.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.19610507246376813" />
       </map>
     </option>
   </component>

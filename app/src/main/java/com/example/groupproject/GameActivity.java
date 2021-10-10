@@ -100,6 +100,7 @@ public class GameActivity extends AppCompatActivity {
             obstacle2.draw(canvas);
             obstacle3.draw(canvas);
             target.draw(canvas);
+            invalidate();
         }
 
 
