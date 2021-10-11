@@ -17,8 +17,6 @@ public class Obstacles extends Object {
     private final Paint color_speed = new Paint();
     private final Paint color_sizePlayer = new Paint();
 
-    String text = "2x";
-
 
     public Obstacles(int x, int y, int radius, int type){
         super(x,y, radius);
@@ -35,25 +33,25 @@ public class Obstacles extends Object {
 
         //Depending on the effect
         if (type == 1){
-            //Increase Size of Target (circle inside with red)
+            //Increase Size of Target (circle inside wtth red)
             color_increaseSizeTarget.setColor(Color.argb(255, 255, 0, 0));
-            canvas.drawCircle(getX(), getY(), getRadius()-15, color_increaseSizeTarget);
             canvas.drawCircle(getX(), getY(), getRadius(), color_default);
+            canvas.drawCircle(getX(), getY(), getRadius()-20, color_increaseSizeTarget);
 
         }else if (type == 2){
             //Increase Speed (2x)
-            color_speed.setColor(Color.WHITE);
-            color_speed.setTextSize(18f);
-            color_speed.setAntiAlias(true);
+            String text = "2x";
+            color_speed.setColor(Color.BLACK);
+            color_speed.setTextSize(60f);
             color_speed.setTextAlign(Paint.Align.CENTER);
-            Rect bounds = new Rect();
-            color_speed.getTextBounds(text, 0, text.length(), bounds);
-            canvas.drawText(text, -3, 15, color_speed);
             canvas.drawCircle(getX(), getY(), getRadius(), color_default);
+            canvas.drawText(text, getX(), getY(), color_speed);
 
         }else if (type == 3){
             //Increase Player Size (circle inside without filling)
-            color_sizePlayer.setColor(Color.argb(255, 255, 0, 0));
+            color_sizePlayer.setStyle(Paint.Style.STROKE);
+            color_sizePlayer.setColor(Color.BLACK);
+            color_sizePlayer.setStrokeWidth(10);
             canvas.drawCircle(getX(), getY(), getRadius(), color_default);
             canvas.drawCircle(getX(), getY(), getRadius()-15, color_sizePlayer);
 

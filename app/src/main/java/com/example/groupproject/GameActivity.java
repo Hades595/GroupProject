@@ -48,6 +48,7 @@ public class GameActivity extends AppCompatActivity {
         //Declare the obstacles
             //Later define multiple obstacles for each power up and just call the draw method
         Ball player;
+        Obstacles obstacle0;
         Obstacles obstacle1;
         Obstacles obstacle2;
         Obstacles obstacle3;
@@ -156,6 +157,7 @@ public class GameActivity extends AppCompatActivity {
 
             //Draw the objects
             player = new Ball(x,y+700,ballSize);
+            obstacle0 = new Obstacles(x, y-100, obstacleSize, 0);
             obstacle1 = new Obstacles(x, y-200, obstacleSize, 1);
             obstacle2 = new Obstacles(x+300, y-200, obstacleSize, 2);
             obstacle3 = new Obstacles(x-300, y-200, obstacleSize, 3);
@@ -193,8 +195,8 @@ public class GameActivity extends AppCompatActivity {
                 increaseYby -= tempy;
             }
 
-            //check if collision occured with target
-            if(player.collisionDetection(player, target)){
+            //check if collision occurred with target
+            if(player.collisionDetection(target)){
                 //Change the target's x and y
                 target.setX(400);
                 target.setY(500);
@@ -202,6 +204,7 @@ public class GameActivity extends AppCompatActivity {
                 currentScore++;
             }
 
+            obstacle0.draw(canvas);
             obstacle1.draw(canvas);
             obstacle2.draw(canvas);
             obstacle3.draw(canvas);
