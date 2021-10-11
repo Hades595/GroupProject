@@ -1,5 +1,8 @@
 package com.example.groupproject;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 public class Object {
     //Co-ordinates for any object
     private int x;
@@ -39,12 +42,11 @@ public class Object {
     }
 
     //Basic collision detection for circles
-
-    public boolean collisionDetection(Object ball1, Object ball2){
-        double xDif = ball1.x - ball2.x;
-        double yDif = ball1.y - ball2.y;
+    public boolean collisionDetection(Object ball2){
+        double xDif = x - ball2.x;
+        double yDif = y - ball2.y;
         double distanceSquared = xDif * xDif + yDif * yDif;
-        return distanceSquared < (ball1.radius + ball2.radius) * (ball1.radius + ball2.radius);
+        return distanceSquared < (radius + ball2.radius) * (radius + ball2.radius);
     }
 
 }

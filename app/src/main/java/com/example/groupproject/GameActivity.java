@@ -15,12 +15,11 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Random;
+
 public class GameActivity extends AppCompatActivity {
 
     //TODO
-    //Implement score
-    //Implement trajectory
-    //Implement gestures and fling
     //Implement check collision
 
     //For the scores
@@ -49,10 +48,12 @@ public class GameActivity extends AppCompatActivity {
         //Declare the obstacles
             //Later define multiple obstacles for each power up and just call the draw method
         Ball player;
+        Obstacles obstacle0;
         Obstacles obstacle1;
         Obstacles obstacle2;
         Obstacles obstacle3;
         Target target;
+
 
         //Of the player
         private int x;
@@ -63,6 +64,11 @@ public class GameActivity extends AppCompatActivity {
         //For checking if the ball is inside the walls
         private float tempx = 0;
         private float tempy = 0;
+        //For the play area
+        private int maxX = 0;
+        private int maxY = 0;
+        private int minX = 0;
+        private  int minY = 0;
 
 
         public GraphicsView(Context context){
@@ -143,12 +149,18 @@ public class GameActivity extends AppCompatActivity {
             //Find the middle
             x = (int) (width/2);
             y = (int) (height/2);
+            //Define the play area
+            maxX = (int) (width - 65);
+            maxY = (int) (height - 65);
+            minX = 65;
+            minY = 65;
 
             //Draw the objects
             player = new Ball(x,y+700,ballSize);
-            obstacle1 = new Obstacles(x, y-200, obstacleSize, 2);
+            obstacle0 = new Obstacles(x, y-100, obstacleSize, 0);
+            obstacle1 = new Obstacles(x, y-200, obstacleSize, 1);
             obstacle2 = new Obstacles(x+300, y-200, obstacleSize, 2);
-            obstacle3 = new Obstacles(x-300, y-200, obstacleSize, 2);
+            obstacle3 = new Obstacles(x-300, y-200, obstacleSize, 3);
             target = new Target(x, y-600, targetSize);
 
             super.onSizeChanged(w, h, oldw, oldh);
@@ -181,10 +193,18 @@ public class GameActivity extends AppCompatActivity {
                 //Reverse the ball
                 increaseXby -= tempx;
                 increaseYby -= tempy;
-
-
             }
 
+            //check if collision occurred with target
+            if(player.collisionDetection(target)){
+                //Change the target's x and y
+                target.setX(400);
+                target.setY(500);
+                //Increase the score
+                currentScore++;
+            }
+
+            obstacle0.draw(canvas);
             obstacle1.draw(canvas);
             obstacle2.draw(canvas);
             obstacle3.draw(canvas);
