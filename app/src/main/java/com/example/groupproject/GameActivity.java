@@ -15,6 +15,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Random;
+
 public class GameActivity extends AppCompatActivity {
 
     //TODO
@@ -51,6 +53,7 @@ public class GameActivity extends AppCompatActivity {
         Obstacles obstacle3;
         Target target;
 
+
         //Of the player
         private int x;
         private int y;
@@ -60,6 +63,11 @@ public class GameActivity extends AppCompatActivity {
         //For checking if the ball is inside the walls
         private float tempx = 0;
         private float tempy = 0;
+        //For the play area
+        private int maxX = 0;
+        private int maxY = 0;
+        private int minX = 0;
+        private  int minY = 0;
 
 
         public GraphicsView(Context context){
@@ -140,6 +148,11 @@ public class GameActivity extends AppCompatActivity {
             //Find the middle
             x = (int) (width/2);
             y = (int) (height/2);
+            //Define the play area
+            maxX = (int) (width - 65);
+            maxY = (int) (height - 65);
+            minX = 65;
+            minY = 65;
 
             //Draw the objects
             player = new Ball(x,y+700,ballSize);
@@ -182,12 +195,11 @@ public class GameActivity extends AppCompatActivity {
 
             //check if collision occured with target
             if(player.collisionDetection(player, target)){
+                //Change the target's x and y
+                target.setX(400);
+                target.setY(500);
                 //Increase the score
                 currentScore++;
-                //Change the target's x and y
-                target.setX(100);
-                target.setY(300);
-
             }
 
             obstacle1.draw(canvas);
