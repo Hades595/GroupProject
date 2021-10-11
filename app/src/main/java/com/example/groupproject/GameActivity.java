@@ -18,9 +18,6 @@ import android.view.View;
 public class GameActivity extends AppCompatActivity {
 
     //TODO
-    //Implement score
-    //Implement trajectory
-    //Implement gestures and fling
     //Implement check collision
 
     //For the scores
@@ -181,7 +178,15 @@ public class GameActivity extends AppCompatActivity {
                 //Reverse the ball
                 increaseXby -= tempx;
                 increaseYby -= tempy;
+            }
 
+            //check if collision occured with target
+            if(player.collisionDetection(player, target)){
+                //Increase the score
+                currentScore++;
+                //Change the target's x and y
+                target.setX(100);
+                target.setY(300);
 
             }
 

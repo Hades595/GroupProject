@@ -10,8 +10,8 @@ public class Target extends Object {
     //TODO
     //Need to add outline
 
-    private final int x;
-    private final int y;
+    private int x;
+    private int y;
     private final int radius;
     private final Paint color_default = new Paint();
 
@@ -22,6 +22,16 @@ public class Target extends Object {
         this.radius = radius;
 
         color_default.setColor(Color.argb(255, 255, 000, 000));
+    }
+
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
     }
 
     public void draw(Canvas canvas){
