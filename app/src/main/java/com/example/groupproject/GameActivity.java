@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,45 +14,38 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.Random;
-
 public class GameActivity extends AppCompatActivity {
 
-    //TODO
-    //Implement check collision
+    //Constant sizes for the objects
+    private int BALL_SIZE = 50;
+    private int TARGET_SIZE = 60;
+    private int OBSTACLE_SIZE = 65;
 
     //For the scores
     public static int[] scores = new int[3];
     private int currentScore = 0;
     private Paint textColor = new Paint();
 
-    //Constant sizes for the objects
-        //I plan to move them to classes, as they make more sense to be there
-    private int ballSize = 50;
-    private int targetSize = 60;
-    private int obstacleSize = 65;
-
     //Graphics view to draw upon
     public class GraphicsView extends View {
 
+        //For debugging
+        //String TAG = "TAG_GESTURE";
+
         //Create a gesture detector
         private final GestureDetector gestureDetector;
-
-        String TAG = "TAG_GESTURE";
 
         //Width and Height of the screen
         private float width = 0;
         private float height = 0;
 
         //Declare the obstacles
-            //Later define multiple obstacles for each power up and just call the draw method
         Ball player;
-        Obstacles obstacle0;
-        Obstacles obstacle1;
-        Obstacles obstacle2;
-        Obstacles obstacle3;
+        Obstacles obstacleBasic;
+        Obstacles obstacleIncreaseTarget;
+        Obstacles obstacleIncreaseSpeed;
+        Obstacles obstacleIncreasePlaySize;
         Target target;
-
 
         //Of the player
         private int x;
@@ -61,9 +53,6 @@ public class GameActivity extends AppCompatActivity {
         //For the animation of the player
         private float increaseXby = 0;
         private float increaseYby = 0;
-        //For checking if the ball is inside the walls
-        private float tempx = 0;
-        private float tempy = 0;
         //For the play area
         private int maxX = 0;
         private int maxY = 0;
@@ -103,10 +92,11 @@ public class GameActivity extends AppCompatActivity {
             //Whenever the user flings
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                Log.i(TAG, "onFling");
-                Log.i(TAG, "onFling velocity x: " + velocityX);
-                Log.i(TAG, "onFling velocity y: " + velocityY);
+                //Log.i(TAG, "onFling");
+                //Log.i(TAG, "onFling velocity x: " + velocityX);
+                //Log.i(TAG, "onFling velocity y: " + velocityY);
 
+                //To find out which direction was swiped
                 float diffY = e2.getY() - e1.getY();
                 float diffX = e2.getX() - e1.getX();
                 if (Math.abs(diffX) > Math.abs(diffY)) {
@@ -140,7 +130,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
 
-        //When the user lanuches the app
+        //When the user launches the app
         @Override
         protected void onSizeChanged(int w, int h, int oldw, int oldh) {
             //Get the width and height of the screen
@@ -155,13 +145,14 @@ public class GameActivity extends AppCompatActivity {
             minX = 65;
             minY = 65;
 
-            //Draw the objects
-            player = new Ball(x,y+700,ballSize);
-            obstacle0 = new Obstacles(x, y-100, obstacleSize, 0);
-            obstacle1 = new Obstacles(x, y-200, obstacleSize, 1);
-            obstacle2 = new Obstacles(x+300, y-200, obstacleSize, 2);
-            obstacle3 = new Obstacles(x-300, y-200, obstacleSize, 3);
-            target = new Target(x, y-600, targetSize);
+            //Draw the objects in initial positions
+            //Might change later
+            player = new Ball(x,y+700, BALL_SIZE);
+            obstacleBasic = new Obstacles(x, y-100, OBSTACLE_SIZE, 0);
+            obstacleIncreaseTarget = new Obstacles(x, y-200, OBSTACLE_SIZE, 1);
+            obstacleIncreaseSpeed = new Obstacles(x+300, y-200, OBSTACLE_SIZE, 2);
+            obstacleIncreasePlaySize = new Obstacles(x-300, y-200, OBSTACLE_SIZE, 3);
+            target = new Target(x, y-600, TARGET_SIZE);
 
             super.onSizeChanged(w, h, oldw, oldh);
         }
@@ -185,8 +176,9 @@ public class GameActivity extends AppCompatActivity {
             if (!(x > 0 && x < width &&
                     y > 0 && y < height)){
                 //Set the temp values
-                tempx = increaseXby;
-                tempy = increaseYby;
+                //For checking if the ball is inside the walls
+                float tempx = increaseXby;
+                float tempy = increaseYby;
                 //Stop the ball
                 increaseXby = 0.0f;
                 increaseYby = 0.0f;
@@ -204,10 +196,10 @@ public class GameActivity extends AppCompatActivity {
                 currentScore++;
             }
 
-            obstacle0.draw(canvas);
-            obstacle1.draw(canvas);
-            obstacle2.draw(canvas);
-            obstacle3.draw(canvas);
+            obstacleBasic.draw(canvas);
+            obstacleIncreaseTarget.draw(canvas);
+            obstacleIncreaseSpeed.draw(canvas);
+            obstacleIncreasePlaySize.draw(canvas);
             target.draw(canvas);
             invalidate();
         }
