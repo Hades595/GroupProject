@@ -17,14 +17,17 @@ import android.view.View;
 public class GameActivity extends AppCompatActivity {
 
     //Constant sizes for the objects
-    private int BALL_SIZE = 50;
-    private int TARGET_SIZE = 60;
-    private int OBSTACLE_SIZE = 65;
+    private final int BALL_SIZE = 50;
+    private final int TARGET_SIZE = 60;
+    private final int OBSTACLE_SIZE = 65;
 
     //For the scores
     public static int[] scores = new int[3];
     private int currentScore = 0;
     private Paint textColor = new Paint();
+
+    //For 'level'
+    private int currentLevel = 0;
 
     //Graphics view to draw upon
     public class GraphicsView extends View {
@@ -146,7 +149,6 @@ public class GameActivity extends AppCompatActivity {
             minY = 65;
 
             //Draw the objects in initial positions
-            //Might change later
             player = new Ball(x,y+700, BALL_SIZE);
             obstacleBasic = new Obstacles(x, y-100, OBSTACLE_SIZE, 0);
             obstacleIncreaseTarget = new Obstacles(x, y-200, OBSTACLE_SIZE, 1);
@@ -154,16 +156,14 @@ public class GameActivity extends AppCompatActivity {
             obstacleIncreasePlaySize = new Obstacles(x-300, y-200, OBSTACLE_SIZE, 3);
             target = new Target(x, y-600, TARGET_SIZE);
 
+
+
             super.onSizeChanged(w, h, oldw, oldh);
         }
 
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            //Draw the score
-            canvas.drawText(String.valueOf(currentScore), width/2, 200, textColor);
-            //Draw the player
-            player.draw(canvas);
 
             //Add the animation
             x += increaseXby;
@@ -196,11 +196,45 @@ public class GameActivity extends AppCompatActivity {
                 currentScore++;
             }
 
+            //Check if collision occurred with obstacle
+            if (player.collisionDetection(obstacleBasic)){
+                //Stops the game
+                increaseXby = 0;
+                increaseYby = 0;
+                x+=increaseXby;
+                y+=increaseYby;
+                player.setX(x);
+                player.setY(y);
+
+            }
+
+            if (player.collisionDetection(obstacleIncreaseTarget)){
+                //Increase the target size
+                target.setRadius(target.getRadius()*2);
+            }
+
+            if (player.collisionDetection(obstacleIncreaseSpeed)){
+                //Increase the speed
+                increaseXby = increaseXby*2;
+                increaseYby = increaseYby*2;
+            }
+
+            if (player.collisionDetection(obstacleIncreasePlaySize)){
+                //Increase the player size
+                player.setRadius(player.getRadius()*2);
+            }
+
+
+            //Draw the score
+            canvas.drawText(String.valueOf(currentScore), width/2, 200, textColor);
+            //Draw the player
+            player.draw(canvas);
             obstacleBasic.draw(canvas);
             obstacleIncreaseTarget.draw(canvas);
             obstacleIncreaseSpeed.draw(canvas);
             obstacleIncreasePlaySize.draw(canvas);
             target.draw(canvas);
+            //Create loop
             invalidate();
         }
 
