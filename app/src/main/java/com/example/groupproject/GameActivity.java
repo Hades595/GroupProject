@@ -156,9 +156,9 @@ public class GameActivity extends AppCompatActivity {
 
             //Draw the objects
             player = new Ball(x,y+700,ballSize);
-            obstacle1 = new Obstacles(x, y-200, obstacleSize, 2);
+            obstacle1 = new Obstacles(x, y-200, obstacleSize, 1);
             obstacle2 = new Obstacles(x+300, y-200, obstacleSize, 2);
-            obstacle3 = new Obstacles(x-300, y-200, obstacleSize, 2);
+            obstacle3 = new Obstacles(x-300, y-200, obstacleSize, 3);
             target = new Target(x, y-600, targetSize);
 
             super.onSizeChanged(w, h, oldw, oldh);
