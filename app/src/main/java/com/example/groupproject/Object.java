@@ -49,4 +49,9 @@ public class Object {
         return distanceSquared < (radius + ball2.radius) * (radius + ball2.radius);
     }
 
+    public void remove(){
+        this.x = -100;
+        this.y = -100;
+    }
+
 }

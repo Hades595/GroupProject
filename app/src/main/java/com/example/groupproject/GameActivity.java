@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,14 +18,19 @@ import android.view.View;
 public class GameActivity extends AppCompatActivity {
 
     //Constant sizes for the objects
-    private int BALL_SIZE = 50;
-    private int TARGET_SIZE = 60;
-    private int OBSTACLE_SIZE = 65;
+    private final int BALL_SIZE = 50;
+    private final int TARGET_SIZE = 60;
+    private final int OBSTACLE_SIZE = 65;
 
     //For the scores
     public static int[] scores = new int[3];
     private int currentScore = 0;
     private Paint textColor = new Paint();
+
+    //For 'level'
+    private int currentLevel = 0;
+
+    private Intent i;
 
     //Graphics view to draw upon
     public class GraphicsView extends View {
@@ -59,6 +65,13 @@ public class GameActivity extends AppCompatActivity {
         private int minX = 0;
         private  int minY = 0;
 
+        //Boolean for only making it go once
+        private boolean gameOver = false;
+        private boolean gainPoint = false;
+        private boolean gainTargetSize = false;
+        private boolean gainSpeed = false;
+        private boolean gainPlayerSize = false;
+
 
         public GraphicsView(Context context){
             super(context);
@@ -81,6 +94,7 @@ public class GameActivity extends AppCompatActivity {
 
             private static final int SWIPE_THRESHOLD = 100;
             private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
 
             //Whenever the user pulls down
             @Override
@@ -146,13 +160,14 @@ public class GameActivity extends AppCompatActivity {
             minY = 65;
 
             //Draw the objects in initial positions
-            //Might change later
-            player = new Ball(x,y+700, BALL_SIZE);
-            obstacleBasic = new Obstacles(x, y-100, OBSTACLE_SIZE, 0);
+            player = new Ball(x,y+500, BALL_SIZE);
+            obstacleBasic = new Obstacles(x-90, y-500, OBSTACLE_SIZE, 0);
             obstacleIncreaseTarget = new Obstacles(x, y-200, OBSTACLE_SIZE, 1);
             obstacleIncreaseSpeed = new Obstacles(x+300, y-200, OBSTACLE_SIZE, 2);
             obstacleIncreasePlaySize = new Obstacles(x-300, y-200, OBSTACLE_SIZE, 3);
             target = new Target(x, y-600, TARGET_SIZE);
+
+
 
             super.onSizeChanged(w, h, oldw, oldh);
         }
@@ -160,16 +175,43 @@ public class GameActivity extends AppCompatActivity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            //Draw the score
-            canvas.drawText(String.valueOf(currentScore), width/2, 200, textColor);
-            //Draw the player
-            player.draw(canvas);
 
-            //Add the animation
-            x += increaseXby;
-            y += increaseYby;
-            player.setX(x);
-            player.setY(y);
+            //Move to score screen
+            //Start the list activity
+            if (gameOver){
+                //To move to the Score screen
+                i = new Intent(getContext(), ScoreActivity.class);
+                startActivity(i);
+                gameOver = false;
+            }
+
+            if (gainPoint){
+                //Change the target's x and y
+                target.setX(400);
+                target.setY(500);
+                //Increase the score
+                currentScore++;
+                gainPoint = false;
+            }
+
+            if (gainTargetSize){
+                //Increase the target size
+                target.setRadius(target.getRadius()*2);
+                gainTargetSize = false;
+            }
+
+            if (gainSpeed){
+                //Increase the speed
+                increaseXby = increaseXby*2;
+                increaseYby = increaseYby*2;
+                gainSpeed = false;
+            }
+
+            if (gainPlayerSize){
+                //Increase the player size
+                player.setRadius(player.getRadius()*2);
+                gainPlayerSize = false;
+            }
 
 
             //If the point is between the screen
@@ -189,18 +231,57 @@ public class GameActivity extends AppCompatActivity {
 
             //check if collision occurred with target
             if(player.collisionDetection(target)){
-                //Change the target's x and y
-                target.setX(400);
-                target.setY(500);
-                //Increase the score
-                currentScore++;
+                target.remove();
+                gainPoint = true;
             }
 
+            //Check if collision occurred with obstacle
+            if (player.collisionDetection(obstacleBasic)){
+                obstacleBasic.remove();
+                //Stops the player
+                increaseXby = 0;
+                increaseYby = 0;
+                x+=increaseXby;
+                y+=increaseYby;
+                player.setX(x);
+                player.setY(y);
+                gameOver = true;
+            }
+
+            if (player.collisionDetection(obstacleIncreaseTarget)){
+                obstacleIncreaseTarget.remove();
+                gainTargetSize = true;
+            }
+
+            if (player.collisionDetection(obstacleIncreaseSpeed)){
+                obstacleIncreaseSpeed.remove();
+                gainSpeed = true;
+            }
+
+            if (player.collisionDetection(obstacleIncreasePlaySize)){
+                obstacleIncreasePlaySize.remove();
+                gainPlayerSize = true;
+            }
+
+            //Add the animation
+            x = player.getX();
+            y = player.getY();
+            x += increaseXby;
+            y += increaseYby;
+            player.setX(x);
+            player.setY(y);
+
+
+            //Draw the score
+            canvas.drawText(String.valueOf(currentScore), width/2, 200, textColor);
+            //Draw the player
+            player.draw(canvas);
             obstacleBasic.draw(canvas);
             obstacleIncreaseTarget.draw(canvas);
             obstacleIncreaseSpeed.draw(canvas);
             obstacleIncreasePlaySize.draw(canvas);
             target.draw(canvas);
+            //Create loop
             invalidate();
         }
 
