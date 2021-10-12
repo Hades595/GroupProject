@@ -183,7 +183,7 @@ public class GameActivity extends AppCompatActivity {
             //Start the list activity
             if (gameOver){
                 //check if the current score is higher than the previous scores
-                for (int i = 0; i <= scores.length; i++){
+                for (int i = 0; i < scores.length; i++){
                     //If the current score is higher than the previous scores
                     if (currentScore > scores[i])
                         //change the score
@@ -200,8 +200,6 @@ public class GameActivity extends AppCompatActivity {
 
             if (gainPoint){
                 nextLevel();
-                //Increase the score
-                currentScore++;
                 gainPoint = false;
             }
 
@@ -246,6 +244,8 @@ public class GameActivity extends AppCompatActivity {
                 //Remove the target so the player doesnt get any more points
                 target.remove();
                 gainPoint = true;
+                //Increase the score
+                currentScore++;
                 currentLevel++;
             }
 
