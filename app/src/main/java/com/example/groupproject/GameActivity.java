@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -28,6 +29,8 @@ public class GameActivity extends AppCompatActivity {
 
     //For 'level'
     private int currentLevel = 0;
+
+    private Intent i;
 
     //Graphics view to draw upon
     public class GraphicsView extends View {
@@ -62,11 +65,16 @@ public class GameActivity extends AppCompatActivity {
         private int minX = 0;
         private  int minY = 0;
 
+        //Boolean for only making it go once
+        private boolean gameOver = false;
+
 
         public GraphicsView(Context context){
             super(context);
             //Gesture detector
             gestureDetector = new GestureDetector(context, new MyGestureListener());
+            //To move to the Score screen
+            i = new Intent(getContext(), ScoreActivity.class);
             textColor.setColor(Color.WHITE);
             textColor.setTextSize(120);
         }
@@ -84,6 +92,7 @@ public class GameActivity extends AppCompatActivity {
 
             private static final int SWIPE_THRESHOLD = 100;
             private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
 
             //Whenever the user pulls down
             @Override
@@ -149,8 +158,8 @@ public class GameActivity extends AppCompatActivity {
             minY = 65;
 
             //Draw the objects in initial positions
-            player = new Ball(x,y+700, BALL_SIZE);
-            obstacleBasic = new Obstacles(x, y-100, OBSTACLE_SIZE, 0);
+            player = new Ball(x,y+500, BALL_SIZE);
+            obstacleBasic = new Obstacles(x, y-500, OBSTACLE_SIZE, 0);
             obstacleIncreaseTarget = new Obstacles(x, y-200, OBSTACLE_SIZE, 1);
             obstacleIncreaseSpeed = new Obstacles(x+300, y-200, OBSTACLE_SIZE, 2);
             obstacleIncreasePlaySize = new Obstacles(x-300, y-200, OBSTACLE_SIZE, 3);
@@ -165,12 +174,12 @@ public class GameActivity extends AppCompatActivity {
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
 
-            //Add the animation
-            x += increaseXby;
-            y += increaseYby;
-            player.setX(x);
-            player.setY(y);
-
+            //Move to score screen
+            //Start the list activity
+            if (gameOver){
+                //this.getContext().startActivity(i);
+                finish();
+            }
 
             //If the point is between the screen
             if (!(x > 0 && x < width &&
@@ -197,8 +206,9 @@ public class GameActivity extends AppCompatActivity {
             }
 
             //Check if collision occurred with obstacle
-            if (player.collisionDetection(obstacleBasic)){
-                //Stops the game
+            if (obstacleBasic.collisionDetection(player)){
+                gameOver = true;
+                //Stops the player
                 increaseXby = 0;
                 increaseYby = 0;
                 x+=increaseXby;
@@ -223,6 +233,14 @@ public class GameActivity extends AppCompatActivity {
                 //Increase the player size
                 player.setRadius(player.getRadius()*2);
             }
+
+            //Add the animation
+            x = player.getX();
+            y = player.getY();
+            x += increaseXby;
+            y += increaseYby;
+            player.setX(x);
+            player.setY(y);
 
 
             //Draw the score
