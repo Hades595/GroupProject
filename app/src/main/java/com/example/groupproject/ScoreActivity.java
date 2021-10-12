@@ -1,13 +1,13 @@
 package com.example.groupproject;
-
-import static com.example.groupproject.GameActivity.scores;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
-import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class ScoreActivity extends AppCompatActivity {
 
@@ -15,6 +15,9 @@ public class ScoreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
+
+        Intent i = getIntent();
+        ArrayList scores =  i.getParcelableExtra("scores");
 
         //Remove the action bar
         ActionBar actionbar = getSupportActionBar();
