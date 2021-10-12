@@ -15,6 +15,9 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class GameActivity extends AppCompatActivity {
 
     //Constant sizes for the objects
@@ -26,9 +29,10 @@ public class GameActivity extends AppCompatActivity {
     public static int[] scores = new int[3];
     private int currentScore = 0;
     private Paint textColor = new Paint();
-
     //For 'level'
     private int currentLevel = 0;
+    //For the Obstacles
+    ArrayList<Obstacles> obstacles = new ArrayList<>();
 
     private Intent i;
 
@@ -160,17 +164,21 @@ public class GameActivity extends AppCompatActivity {
             minY = 65;
 
             //Draw the objects in initial positions
+            //First level is always the same
             player = new Ball(x,y+500, BALL_SIZE);
-            obstacleBasic = new Obstacles(x-90, y-500, OBSTACLE_SIZE, 0);
+            obstacleBasic = new Obstacles(x, y+100, OBSTACLE_SIZE, 0);
+            obstacles.add(obstacleBasic); //Just need to add in to keep track of how many there are
             obstacleIncreaseTarget = new Obstacles(x, y-200, OBSTACLE_SIZE, 1);
             obstacleIncreaseSpeed = new Obstacles(x+300, y-200, OBSTACLE_SIZE, 2);
             obstacleIncreasePlaySize = new Obstacles(x-300, y-200, OBSTACLE_SIZE, 3);
-            target = new Target(x, y-600, TARGET_SIZE);
+            target = new Target(x, y-500, TARGET_SIZE);
 
 
 
             super.onSizeChanged(w, h, oldw, oldh);
         }
+
+        Random rand = new Random();
 
         @Override
         protected void onDraw(Canvas canvas) {
@@ -186,9 +194,7 @@ public class GameActivity extends AppCompatActivity {
             }
 
             if (gainPoint){
-                //Change the target's x and y
-                target.setX(400);
-                target.setY(500);
+                nextLevel();
                 //Increase the score
                 currentScore++;
                 gainPoint = false;
@@ -233,19 +239,22 @@ public class GameActivity extends AppCompatActivity {
             if(player.collisionDetection(target)){
                 target.remove();
                 gainPoint = true;
+                currentLevel++;
             }
 
-            //Check if collision occurred with obstacle
-            if (player.collisionDetection(obstacleBasic)){
-                obstacleBasic.remove();
-                //Stops the player
-                increaseXby = 0;
-                increaseYby = 0;
-                x+=increaseXby;
-                y+=increaseYby;
-                player.setX(x);
-                player.setY(y);
-                gameOver = true;
+            for (Obstacles obstacle:obstacles) {
+                //Check if collision occurred with obstacle
+                if (player.collisionDetection(obstacle)){
+                    obstacle.remove();
+                    //Stops the player
+                    increaseXby = 0;
+                    increaseYby = 0;
+                    x+=increaseXby;
+                    y+=increaseYby;
+                    player.setX(x);
+                    player.setY(y);
+                    gameOver = true;
+                }
             }
 
             if (player.collisionDetection(obstacleIncreaseTarget)){
@@ -271,18 +280,31 @@ public class GameActivity extends AppCompatActivity {
             player.setX(x);
             player.setY(y);
 
-
             //Draw the score
             canvas.drawText(String.valueOf(currentScore), width/2, 200, textColor);
             //Draw the player
             player.draw(canvas);
-            obstacleBasic.draw(canvas);
+            //Draw each obstacle
+            for (Obstacles obstacle:obstacles) {
+                obstacle.draw(canvas);
+            }
             obstacleIncreaseTarget.draw(canvas);
             obstacleIncreaseSpeed.draw(canvas);
             obstacleIncreasePlaySize.draw(canvas);
             target.draw(canvas);
             //Create loop
             invalidate();
+        }
+
+        private void nextLevel(){
+            //Every level more game over balls show up
+            if (currentLevel > 0 && currentLevel < 25){
+                target.setX(rand.nextInt(maxX));
+                target.setY(rand.nextInt(maxY));
+                //Increase the number of game over obstacles
+                Obstacles obstacleBasic = new Obstacles(rand.nextInt(maxX),rand.nextInt(maxY), OBSTACLE_SIZE, 0);
+                obstacles.add(obstacleBasic);
+            }
         }
 
 
