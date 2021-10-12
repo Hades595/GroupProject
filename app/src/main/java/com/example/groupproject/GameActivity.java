@@ -16,28 +16,29 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
-    //Constant sizes for the objects
-    private final int BALL_SIZE = 50;
-    private final int TARGET_SIZE = 60;
-    private final int OBSTACLE_SIZE = 65;
-
-    //For the scores
-    public static int[] scores = new int[3];
-    private int currentScore = 0;
-    private Paint textColor = new Paint();
-    //For 'level'
-    private int currentLevel = 0;
-    //For the Obstacles
-    ArrayList<Obstacles> obstacles = new ArrayList<>();
-
-    private Intent i;
-
     //Graphics view to draw upon
     public class GraphicsView extends View {
+
+        //Constant sizes for the objects
+        private final int BALL_SIZE = 50;
+        private final int TARGET_SIZE = 60;
+        private final int OBSTACLE_SIZE = 65;
+
+        //For the scores
+        public int[] scores = new int[3];
+        private int currentScore = 0;
+        private final Paint textColor = new Paint();
+        //For 'level'
+        private int currentLevel = 0;
+        //For the Obstacles
+        ArrayList<Obstacles> obstacles = new ArrayList<>();
+
+        private Intent i;
 
         //For debugging
         //String TAG = "TAG_GESTURE";
@@ -66,8 +67,6 @@ public class GameActivity extends AppCompatActivity {
         //For the play area
         private int maxX = 0;
         private int maxY = 0;
-        private int minX = 0;
-        private  int minY = 0;
 
         //Boolean for only making it go once
         private boolean gameOver = false;
@@ -83,6 +82,7 @@ public class GameActivity extends AppCompatActivity {
             gestureDetector = new GestureDetector(context, new MyGestureListener());
             textColor.setColor(Color.WHITE);
             textColor.setTextSize(120);
+            Arrays.fill(scores, 0);
         }
 
         @Override
@@ -160,8 +160,6 @@ public class GameActivity extends AppCompatActivity {
             //Define the play area
             maxX = (int) (width - 65);
             maxY = (int) (height - 65);
-            minX = 65;
-            minY = 65;
 
             //Draw the objects in initial positions
             //First level is always the same
@@ -187,8 +185,14 @@ public class GameActivity extends AppCompatActivity {
             //Move to score screen
             //Start the list activity
             if (gameOver){
+                //check if the current score is higher than the previous scores
+                for (int i = 0; i <= scores.length; i++){
+                    if (currentScore > scores[i])
+                        scores[i] = currentScore;
+                }
                 //To move to the Score screen
                 i = new Intent(getContext(), ScoreActivity.class);
+                i.putExtra("scores", scores);
                 startActivity(i);
                 gameOver = false;
             }
@@ -304,6 +308,14 @@ public class GameActivity extends AppCompatActivity {
                 //Increase the number of game over obstacles
                 Obstacles obstacleBasic = new Obstacles(rand.nextInt(maxX),rand.nextInt(maxY), OBSTACLE_SIZE, 0);
                 obstacles.add(obstacleBasic);
+                //Change the power co-ords
+                obstacleIncreaseTarget.setX(rand.nextInt(maxX));
+                obstacleIncreaseTarget.setY(rand.nextInt(maxY));
+                obstacleIncreaseSpeed.setX(rand.nextInt(maxX));
+                obstacleIncreaseSpeed.setY(rand.nextInt(maxY));
+                obstacleIncreasePlaySize.setX(rand.nextInt(maxX));
+                obstacleIncreasePlaySize.setY(rand.nextInt(maxY));
+
             }
         }
 
@@ -328,8 +340,6 @@ public class GameActivity extends AppCompatActivity {
 
         //New graphics view for drawing ball
         GraphicsView graphicsView = new GraphicsView(this);
-
-        scores[1] = 50;
 
         //Constraint the graphic layout to the constraint layout
         ConstraintLayout constraintLayout = findViewById(R.id.constraint_layout_graphics);
