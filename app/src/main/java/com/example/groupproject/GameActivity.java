@@ -74,6 +74,7 @@ public class GameActivity extends AppCompatActivity {
         private boolean gainPoint = false;
         private boolean gainTargetSize = false;
         private boolean gainSpeed = false;
+        private boolean currSpeed = false;
         private boolean gainPlayerSize = false;
 
         //For random generation
@@ -175,6 +176,8 @@ public class GameActivity extends AppCompatActivity {
             super.onSizeChanged(w, h, oldw, oldh);
         }
 
+        int counter = 0;
+
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
@@ -210,10 +213,20 @@ public class GameActivity extends AppCompatActivity {
             }
 
             if (gainSpeed){
-                //Increase the speed
-                increaseXby = increaseXby*2;
-                increaseYby = increaseYby*2;
                 gainSpeed = false;
+                currSpeed = true;
+            }
+
+            if (currSpeed){
+                //Increase the speed
+                increaseXby = increaseXby*4;
+                increaseYby = increaseYby*4;
+            }
+
+            //Roughly 6 seconds
+            if (counter > 600){
+                currSpeed = false;
+                counter = 0;
             }
 
 
@@ -299,6 +312,7 @@ public class GameActivity extends AppCompatActivity {
             obstacleIncreaseSpeed.draw(canvas);
             obstacleIncreasePlaySize.draw(canvas);
             target.draw(canvas);
+            counter++;
             //Create loop
             invalidate();
         }
