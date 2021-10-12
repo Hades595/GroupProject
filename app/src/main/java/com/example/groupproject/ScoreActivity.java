@@ -26,7 +26,5 @@ public class ScoreActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(uiOptions);
 
-
-        Toast.makeText(this, scores[1], Toast.LENGTH_SHORT).show();
     }
 }

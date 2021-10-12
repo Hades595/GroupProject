@@ -77,8 +77,6 @@ public class GameActivity extends AppCompatActivity {
             super(context);
             //Gesture detector
             gestureDetector = new GestureDetector(context, new MyGestureListener());
-            //To move to the Score screen
-            i = new Intent(getContext(), ScoreActivity.class);
             textColor.setColor(Color.WHITE);
             textColor.setTextSize(120);
         }
@@ -181,15 +179,10 @@ public class GameActivity extends AppCompatActivity {
             //Move to score screen
             //Start the list activity
             if (gameOver){
-                //Stops the player
-                increaseXby = 0;
-                increaseYby = 0;
-                x+=increaseXby;
-                y+=increaseYby;
-                player.setX(x);
-                player.setY(y);
-                //this.getContext().startActivity(i);
-                finish();
+                //To move to the Score screen
+                i = new Intent(getContext(), ScoreActivity.class);
+                startActivity(i);
+                gameOver = false;
             }
 
             if (gainPoint){
@@ -245,6 +238,13 @@ public class GameActivity extends AppCompatActivity {
             //Check if collision occurred with obstacle
             if (player.collisionDetection(obstacleBasic)){
                 obstacleBasic.remove();
+                //Stops the player
+                increaseXby = 0;
+                increaseYby = 0;
+                x+=increaseXby;
+                y+=increaseYby;
+                player.setX(x);
+                player.setY(y);
                 gameOver = true;
             }
 
