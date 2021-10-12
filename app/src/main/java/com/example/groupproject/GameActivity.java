@@ -24,6 +24,9 @@ public class GameActivity extends AppCompatActivity {
     //Graphics view to draw upon
     public class GraphicsView extends View {
 
+        //For debugging
+        //String TAG = "TAG_GESTURE";
+
         //Constant sizes for the objects
         private final int BALL_SIZE = 50;
         private final int TARGET_SIZE = 60;
@@ -38,10 +41,8 @@ public class GameActivity extends AppCompatActivity {
         //For the Obstacles
         ArrayList<Obstacles> obstacles = new ArrayList<>();
 
+        //To switch to score activity
         private Intent i;
-
-        //For debugging
-        //String TAG = "TAG_GESTURE";
 
         //Create a gesture detector
         private final GestureDetector gestureDetector;
@@ -50,7 +51,7 @@ public class GameActivity extends AppCompatActivity {
         private float width = 0;
         private float height = 0;
 
-        //Declare the obstacles
+        //Declare the obstacles for level 1
         Ball player;
         Obstacles obstacleBasic;
         Obstacles obstacleIncreaseTarget;
@@ -73,15 +74,20 @@ public class GameActivity extends AppCompatActivity {
         private boolean gainPoint = false;
         private boolean gainTargetSize = false;
         private boolean gainSpeed = false;
+        private boolean currSpeed = false;
         private boolean gainPlayerSize = false;
 
+        //For random generation
+        private final Random rand = new Random();
 
         public GraphicsView(Context context){
             super(context);
             //Gesture detector
             gestureDetector = new GestureDetector(context, new MyGestureListener());
+            //For the score
             textColor.setColor(Color.WHITE);
             textColor.setTextSize(120);
+            //For the high scores
             Arrays.fill(scores, 0);
         }
 
@@ -110,10 +116,6 @@ public class GameActivity extends AppCompatActivity {
             //Whenever the user flings
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                //Log.i(TAG, "onFling");
-                //Log.i(TAG, "onFling velocity x: " + velocityX);
-                //Log.i(TAG, "onFling velocity y: " + velocityY);
-
                 //To find out which direction was swiped
                 float diffY = e2.getY() - e1.getY();
                 float diffX = e2.getX() - e1.getX();
@@ -171,12 +173,10 @@ public class GameActivity extends AppCompatActivity {
             obstacleIncreasePlaySize = new Obstacles(x-300, y-200, OBSTACLE_SIZE, 3);
             target = new Target(x, y-500, TARGET_SIZE);
 
-
-
             super.onSizeChanged(w, h, oldw, oldh);
         }
 
-        Random rand = new Random();
+        int counter = 0;
 
         @Override
         protected void onDraw(Canvas canvas) {
@@ -186,21 +186,23 @@ public class GameActivity extends AppCompatActivity {
             //Start the list activity
             if (gameOver){
                 //check if the current score is higher than the previous scores
-                for (int i = 0; i <= scores.length; i++){
+                for (int i = 0; i < scores.length; i++){
+                    //If the current score is higher than the previous scores
                     if (currentScore > scores[i])
+                        //change the score
                         scores[i] = currentScore;
                 }
                 //To move to the Score screen
                 i = new Intent(getContext(), ScoreActivity.class);
+                //Put the score in
                 i.putExtra("scores", scores);
+                //Start the score activity
                 startActivity(i);
                 gameOver = false;
             }
 
             if (gainPoint){
                 nextLevel();
-                //Increase the score
-                currentScore++;
                 gainPoint = false;
             }
 
@@ -211,11 +213,22 @@ public class GameActivity extends AppCompatActivity {
             }
 
             if (gainSpeed){
-                //Increase the speed
-                increaseXby = increaseXby*2;
-                increaseYby = increaseYby*2;
                 gainSpeed = false;
+                currSpeed = true;
             }
+
+            if (currSpeed){
+                //Increase the speed
+                increaseXby = increaseXby*4;
+                increaseYby = increaseYby*4;
+            }
+
+            //Roughly 6 seconds
+            if (counter > 600){
+                currSpeed = false;
+                counter = 0;
+            }
+
 
             if (gainPlayerSize){
                 //Increase the player size
@@ -241,8 +254,11 @@ public class GameActivity extends AppCompatActivity {
 
             //check if collision occurred with target
             if(player.collisionDetection(target)){
+                //Remove the target so the player doesnt get any more points
                 target.remove();
                 gainPoint = true;
+                //Increase the score
+                currentScore++;
                 currentLevel++;
             }
 
@@ -262,13 +278,13 @@ public class GameActivity extends AppCompatActivity {
             }
 
             if (player.collisionDetection(obstacleIncreaseTarget)){
+                //Remove the obstacle so the game doesnt keep hitting it
                 obstacleIncreaseTarget.remove();
                 gainTargetSize = true;
             }
 
             if (player.collisionDetection(obstacleIncreaseSpeed)){
                 obstacleIncreaseSpeed.remove();
-                gainSpeed = true;
             }
 
             if (player.collisionDetection(obstacleIncreasePlaySize)){
@@ -276,7 +292,7 @@ public class GameActivity extends AppCompatActivity {
                 gainPlayerSize = true;
             }
 
-            //Add the animation
+            //Add the animation for the player
             x = player.getX();
             y = player.getY();
             x += increaseXby;
@@ -296,6 +312,7 @@ public class GameActivity extends AppCompatActivity {
             obstacleIncreaseSpeed.draw(canvas);
             obstacleIncreasePlaySize.draw(canvas);
             target.draw(canvas);
+            counter++;
             //Create loop
             invalidate();
         }
