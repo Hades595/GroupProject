@@ -67,6 +67,10 @@ public class GameActivity extends AppCompatActivity {
 
         //Boolean for only making it go once
         private boolean gameOver = false;
+        private boolean gainPoint = false;
+        private boolean gainTargetSize = false;
+        private boolean gainSpeed = false;
+        private boolean gainPlayerSize = false;
 
 
         public GraphicsView(Context context){
@@ -159,7 +163,7 @@ public class GameActivity extends AppCompatActivity {
 
             //Draw the objects in initial positions
             player = new Ball(x,y+500, BALL_SIZE);
-            obstacleBasic = new Obstacles(x, y-500, OBSTACLE_SIZE, 0);
+            obstacleBasic = new Obstacles(x-90, y-500, OBSTACLE_SIZE, 0);
             obstacleIncreaseTarget = new Obstacles(x, y-200, OBSTACLE_SIZE, 1);
             obstacleIncreaseSpeed = new Obstacles(x+300, y-200, OBSTACLE_SIZE, 2);
             obstacleIncreasePlaySize = new Obstacles(x-300, y-200, OBSTACLE_SIZE, 3);
@@ -177,9 +181,45 @@ public class GameActivity extends AppCompatActivity {
             //Move to score screen
             //Start the list activity
             if (gameOver){
+                //Stops the player
+                increaseXby = 0;
+                increaseYby = 0;
+                x+=increaseXby;
+                y+=increaseYby;
+                player.setX(x);
+                player.setY(y);
                 //this.getContext().startActivity(i);
                 finish();
             }
+
+            if (gainPoint){
+                //Change the target's x and y
+                target.setX(400);
+                target.setY(500);
+                //Increase the score
+                currentScore++;
+                gainPoint = false;
+            }
+
+            if (gainTargetSize){
+                //Increase the target size
+                target.setRadius(target.getRadius()*2);
+                gainTargetSize = false;
+            }
+
+            if (gainSpeed){
+                //Increase the speed
+                increaseXby = increaseXby*2;
+                increaseYby = increaseYby*2;
+                gainSpeed = false;
+            }
+
+            if (gainPlayerSize){
+                //Increase the player size
+                player.setRadius(player.getRadius()*2);
+                gainPlayerSize = false;
+            }
+
 
             //If the point is between the screen
             if (!(x > 0 && x < width &&
@@ -198,40 +238,29 @@ public class GameActivity extends AppCompatActivity {
 
             //check if collision occurred with target
             if(player.collisionDetection(target)){
-                //Change the target's x and y
-                target.setX(400);
-                target.setY(500);
-                //Increase the score
-                currentScore++;
+                target.remove();
+                gainPoint = true;
             }
 
             //Check if collision occurred with obstacle
-            if (obstacleBasic.collisionDetection(player)){
+            if (player.collisionDetection(obstacleBasic)){
+                obstacleBasic.remove();
                 gameOver = true;
-                //Stops the player
-                increaseXby = 0;
-                increaseYby = 0;
-                x+=increaseXby;
-                y+=increaseYby;
-                player.setX(x);
-                player.setY(y);
-
             }
 
             if (player.collisionDetection(obstacleIncreaseTarget)){
-                //Increase the target size
-                target.setRadius(target.getRadius()*2);
+                obstacleIncreaseTarget.remove();
+                gainTargetSize = true;
             }
 
             if (player.collisionDetection(obstacleIncreaseSpeed)){
-                //Increase the speed
-                increaseXby = increaseXby*2;
-                increaseYby = increaseYby*2;
+                obstacleIncreaseSpeed.remove();
+                gainSpeed = true;
             }
 
             if (player.collisionDetection(obstacleIncreasePlaySize)){
-                //Increase the player size
-                player.setRadius(player.getRadius()*2);
+                obstacleIncreasePlaySize.remove();
+                gainPlayerSize = true;
             }
 
             //Add the animation
