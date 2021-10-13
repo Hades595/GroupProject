@@ -25,7 +25,7 @@ public class GameActivity extends AppCompatActivity {
     public class GraphicsView extends View {
 
         //For debugging
-        //String TAG = "TAG_GESTURE";
+        String TAG = "TAG_GESTURE";
 
         //Constant sizes for the objects
         private final int BALL_SIZE = 50;
@@ -33,7 +33,7 @@ public class GameActivity extends AppCompatActivity {
         private final int OBSTACLE_SIZE = 65;
 
         //For the scores
-        public int[] scores = new int[3];
+        public int[] scores = new int[5];
         private int currentScore = 0;
         private final Paint textColor = new Paint();
         //For 'level'
@@ -109,7 +109,7 @@ public class GameActivity extends AppCompatActivity {
             //Whenever the user pulls down
             @Override
             public boolean onDown(MotionEvent e) {
-                Log.i("TAG", "onDOWN");
+                Log.i(TAG, "onDOWN");
                 return true;
             }
 
@@ -123,10 +123,12 @@ public class GameActivity extends AppCompatActivity {
                     if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffX > 0) {
                             //Swipe right
+                            Log.i(TAG, "Right");
                             increaseXby = 10;
                             increaseYby = 0;
                         } else {
                             //Swipe left
+                            Log.i(TAG, "Left");
                             increaseXby = -10;
                             increaseYby = 0;
                         }
@@ -135,10 +137,12 @@ public class GameActivity extends AppCompatActivity {
                 else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                     if (diffY > 0) {
                         //Swipe bottom
+                        Log.i(TAG, "Bottom");
                         increaseXby = 0;
                         increaseYby = 10;
                     } else {
                         //Swipe top
+                        Log.i(TAG, "Top");
                         increaseXby = 0;
                         increaseYby = -10;
 
