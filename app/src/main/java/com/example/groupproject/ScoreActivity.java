@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class ScoreActivity extends AppCompatActivity {
 
+    //Array for highscore
     public static int[] scoreArrayDup = new int[5];
 
     @Override
@@ -31,10 +32,13 @@ public class ScoreActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(uiOptions);
 
+        //Get the value from the last activity
         Intent intent = getIntent();
         int currentScore = intent.getIntExtra("currentScore", 0);
 
+        //For each value in highscores
         for (int j = 0; j < scoreArrayDup.length; j++){
+            //Check if it is larger than the current value
             if (currentScore > scoreArrayDup[j]){
                 //If it is outside of the index delete
                 if (j == 5) {
@@ -50,11 +54,13 @@ public class ScoreActivity extends AppCompatActivity {
             }
         }
 
+        //For displaying the scores
         TextView latestScore = (TextView) findViewById(R.id.scoreText);
         ImageView overBanner = (ImageView) findViewById(R.id.gameOverBanner);
 
         latestScore.setText(currentScore + "");
 
+        //If the current score is a new high score
         if (currentScore > scoreArrayDup[0]) {
             overBanner.setImageResource(R.drawable.highscorebanner);
         } else {

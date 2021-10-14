@@ -36,9 +36,9 @@ public class GameActivity extends AppCompatActivity {
 
         //For the scores
         private int currentScore = 0;
-        private final Paint textColor = new Paint();
         //For 'level'
         private int currentLevel = 0;
+        private final Paint textColor = new Paint();
         //For the Obstacles
         ArrayList<Obstacles> obstacles = new ArrayList<>();
 
@@ -104,7 +104,6 @@ public class GameActivity extends AppCompatActivity {
 
             private static final int SWIPE_THRESHOLD = 100;
             private static final int SWIPE_VELOCITY_THRESHOLD = 100;
-
 
             //Whenever the user pulls down
             @Override
@@ -199,7 +198,9 @@ public class GameActivity extends AppCompatActivity {
                 finish();
             }
 
+            //If the player gains a point
             if (gainPoint){
+                //Set the new level
                 nextLevel();
                 gainPoint = false;
             }
@@ -210,6 +211,7 @@ public class GameActivity extends AppCompatActivity {
                 gainTargetSize = false;
             }
 
+            //If the user collects gain speed ball
             if (gainSpeed){
                 gainSpeed = false;
                 currSpeed = true;
@@ -255,6 +257,7 @@ public class GameActivity extends AppCompatActivity {
                 //Remove the target so the player doesnt get any more points
                 target.remove();
                 gainPoint = true;
+                //Play sound
                 mp.start();
                 //Increase the score
                 currentScore++;
@@ -265,6 +268,7 @@ public class GameActivity extends AppCompatActivity {
                 //Check if collision occurred with obstacle
                 if (player.collisionDetection(obstacle)){
                     obstacle.remove();
+                    //Play sound
                     mp.start();
                     //Stops the player
                     increaseXby = 0;
@@ -315,7 +319,7 @@ public class GameActivity extends AppCompatActivity {
             obstacleIncreaseSpeed.draw(canvas);
             obstacleIncreasePlaySize.draw(canvas);
             target.draw(canvas);
-            counter++;
+            counter++; //Increase the counter for the speed
             //Create loop
             invalidate();
         }

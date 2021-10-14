@@ -4,6 +4,9 @@
     android:layout_height="match_parent"
     android:background="@color/default_primary">
 
+    <!--Just need to set the color and constraint layout-->
+    <!--As much of the drawing will be done in java-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_graphics"
         android:layout_width="match_parent"

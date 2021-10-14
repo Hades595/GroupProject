@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(uiOptions);
 
+        //Play sound through out the app
         MediaPlayer player = MediaPlayer.create(this, R.raw.music);
         player.setLooping(true);
         player.start();
