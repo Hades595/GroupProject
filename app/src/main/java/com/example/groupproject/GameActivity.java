@@ -198,7 +198,8 @@ public class GameActivity extends AppCompatActivity {
                 }
                 //To move to the Score screen
                 i = new Intent(getContext(), ScoreActivity.class);
-                //Put the score in
+                //Put the scores in
+                i.putExtra("currentScore",currentScore);
                 i.putExtra("scores", scores);
                 //Start the score activity
                 startActivity(i);

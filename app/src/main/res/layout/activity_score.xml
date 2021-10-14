@@ -15,43 +15,49 @@
 
         <!--GAME OVER banner -->
         <ImageView
+            android:id="@+id/gameOverBanner"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="2"
-            android:paddingLeft="70dp"
-            android:paddingRight="70dp"
             android:src="@drawable/gameoverbannerred" />
 
-        <!--Text to display current Score achieved -->
-
-
-        <!--Text to show highest score-->
-
-
-        <!--If new high score, display this banner-->
-
+        <!-- latest score text view -->
+        <TextView
+            android:id="@+id/scoreText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="140"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textSize="45sp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginBottom="45sp"
+            />
 
         <!--Listview to show top 5 scores achieved-->
+        <ListView
+            android:id="@+id/bestFiveScores"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_gravity="center"/>
 
 
         <!--need a RETRY button to activate from a fresh version of gameActivity-->
-
-
         <ImageButton
             android:id="@+id/buttonStart"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="222dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
             android:background="@null"
             android:onClick="onClickRetry"
             android:padding="5dp"
-            android:src="@drawable/buttonretryselector"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:paddingLeft="100dp"
+            android:paddingRight="100dp"
+            android:src="@drawable/buttonretryselector"/>
 
     </LinearLayout>
 
