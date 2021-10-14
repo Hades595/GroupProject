@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -79,6 +80,7 @@ public class GameActivity extends AppCompatActivity {
 
         //For random generation
         private final Random rand = new Random();
+        MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.hit);
 
         public GraphicsView(Context context){
             super(context);
@@ -253,6 +255,7 @@ public class GameActivity extends AppCompatActivity {
                 //Remove the target so the player doesnt get any more points
                 target.remove();
                 gainPoint = true;
+                mp.start();
                 //Increase the score
                 currentScore++;
                 currentLevel++;
@@ -262,6 +265,7 @@ public class GameActivity extends AppCompatActivity {
                 //Check if collision occurred with obstacle
                 if (player.collisionDetection(obstacle)){
                     obstacle.remove();
+                    mp.start();
                     //Stops the player
                     increaseXby = 0;
                     increaseYby = 0;
@@ -276,15 +280,18 @@ public class GameActivity extends AppCompatActivity {
             if (player.collisionDetection(obstacleIncreaseTarget)){
                 //Remove the obstacle so the game doesnt keep hitting it
                 obstacleIncreaseTarget.remove();
+                mp.start();
                 gainTargetSize = true;
             }
 
             if (player.collisionDetection(obstacleIncreaseSpeed)){
                 obstacleIncreaseSpeed.remove();
+                mp.start();
             }
 
             if (player.collisionDetection(obstacleIncreasePlaySize)){
                 obstacleIncreasePlaySize.remove();
+                mp.start();
                 gainPlayerSize = true;
             }
 

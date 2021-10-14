@@ -35,11 +35,7 @@ public class ScoreActivity extends AppCompatActivity {
         int currentScore = intent.getIntExtra("currentScore", 0);
 
         for (int j = 0; j < scoreArrayDup.length; j++){
-            if (currentScore >= scoreArrayDup[j]){
-                //If the current score is the same as the one as in the highscore
-                if (currentScore == scoreArrayDup[j]){
-                    break;
-                }
+            if (currentScore > scoreArrayDup[j]){
                 //If it is outside of the index delete
                 if (j == 5) {
                     //change the score
