@@ -34,7 +34,6 @@ public class GameActivity extends AppCompatActivity {
         private final int OBSTACLE_SIZE = 65;
 
         //For the scores
-        public int[] scores = new int[5];
         private int currentScore = 0;
         private final Paint textColor = new Paint();
         //For 'level'
@@ -88,8 +87,6 @@ public class GameActivity extends AppCompatActivity {
             //For the score
             textColor.setColor(Color.WHITE);
             textColor.setTextSize(120);
-            //For the high scores
-            Arrays.fill(scores, 0);
         }
 
         @Override
@@ -190,21 +187,10 @@ public class GameActivity extends AppCompatActivity {
             //Move to score screen
             //Start the list activity
             if (gameOver){
-                //check if the current score is higher than the previous scores
-                for (int i = 0; i < scores.length; i++){
-                    //If the current score is higher than the previous scores
-                    if (currentScore > scores[i]){
-                        //change the score
-                        scores[i] = currentScore;
-                        break;
-                    }
-                }
-
                 //To move to the Score screen
                 i = new Intent(getContext(), ScoreActivity.class);
                 //Put the scores in
                 i.putExtra("currentScore",currentScore);
-                i.putExtra("scores", scores);
                 //Start the score activity
                 startActivity(i);
                 gameOver = false;

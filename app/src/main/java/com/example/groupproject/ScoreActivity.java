@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ScoreActivity extends AppCompatActivity {
 
@@ -26,7 +25,7 @@ public class ScoreActivity extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.hide();
 
-        //Set immersive mode, since user will be clicking a lot
+        //Set sticky immersive mode, since user will be clicking a lot
         int uiOptions = View. SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View. SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
@@ -36,9 +35,13 @@ public class ScoreActivity extends AppCompatActivity {
         int currentScore = intent.getIntExtra("currentScore", 0);
 
         for (int j = 0; j < scoreArrayDup.length; j++){
-            if (currentScore > scoreArrayDup[j]){
+            if (currentScore >= scoreArrayDup[j]){
+                //If the current score is the same as the one as in the highscore
+                if (currentScore == scoreArrayDup[j]){
+                    break;
+                }
                 //If it is outside of the index delete
-                if (j == 5){
+                if (j == 5) {
                     //change the score
                     scoreArrayDup[j] = currentScore;
                 }
@@ -51,17 +54,11 @@ public class ScoreActivity extends AppCompatActivity {
             }
         }
 
-        //int[] scoreArrayDup = i.getIntArray("scores"); //this contains the last 5 scores. NOT CURRENT SCORE
-        //int[] scoreArrayDup = new int[5];
-
-
         TextView latestScore = (TextView) findViewById(R.id.scoreText);
         ImageView overBanner = (ImageView) findViewById(R.id.gameOverBanner);
 
         latestScore.setText(currentScore + "");
 
-        //premade array for testing overBanner screens
-        //int[] scoreArrayDup = {1,1,1,1,0};
         if (currentScore > scoreArrayDup[0]) {
             overBanner.setImageResource(R.drawable.highscorebanner);
         } else {
@@ -76,7 +73,7 @@ public class ScoreActivity extends AppCompatActivity {
         }
 
         //create the adaptor
-        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayListScores);
+        ArrayAdapter arrayAdapter = new ArrayAdapter<>(this, R.layout.row, arrayListScores);
         ListView listView = (ListView)findViewById(R.id.bestFiveScores);
         listView.setAdapter(arrayAdapter);
 
