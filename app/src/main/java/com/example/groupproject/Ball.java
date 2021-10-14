@@ -13,6 +13,7 @@ public class Ball extends Object{
 
     public Ball(int x, int y, int radius) {
         super(x, y, radius);
+        //Ball color to be white
         color.setColor(Color.WHITE);
     }
 

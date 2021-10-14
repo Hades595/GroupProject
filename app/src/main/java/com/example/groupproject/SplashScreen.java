@@ -25,7 +25,6 @@ public class SplashScreen extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(uiOptions);
 
-
         Handler h = new Handler();
 
         h.postDelayed(new Runnable() {

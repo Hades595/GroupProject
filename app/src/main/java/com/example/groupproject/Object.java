@@ -49,6 +49,7 @@ public class Object {
         return distanceSquared < (radius + ball2.radius) * (radius + ball2.radius);
     }
 
+    //Remove the object so the game doesnt register the effect more than once
     public void remove(){
         this.x = -100;
         this.y = -100;

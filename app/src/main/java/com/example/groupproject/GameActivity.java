@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -34,11 +35,10 @@ public class GameActivity extends AppCompatActivity {
         private final int OBSTACLE_SIZE = 65;
 
         //For the scores
-        public int[] scores = new int[5];
         private int currentScore = 0;
-        private final Paint textColor = new Paint();
         //For 'level'
         private int currentLevel = 0;
+        private final Paint textColor = new Paint();
         //For the Obstacles
         ArrayList<Obstacles> obstacles = new ArrayList<>();
 
@@ -80,6 +80,7 @@ public class GameActivity extends AppCompatActivity {
 
         //For random generation
         private final Random rand = new Random();
+        MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.hit);
 
         public GraphicsView(Context context){
             super(context);
@@ -88,8 +89,6 @@ public class GameActivity extends AppCompatActivity {
             //For the score
             textColor.setColor(Color.WHITE);
             textColor.setTextSize(120);
-            //For the high scores
-            Arrays.fill(scores, 0);
         }
 
         @Override
@@ -105,7 +104,6 @@ public class GameActivity extends AppCompatActivity {
 
             private static final int SWIPE_THRESHOLD = 100;
             private static final int SWIPE_VELOCITY_THRESHOLD = 100;
-
 
             //Whenever the user pulls down
             @Override
@@ -190,28 +188,19 @@ public class GameActivity extends AppCompatActivity {
             //Move to score screen
             //Start the list activity
             if (gameOver){
-                //check if the current score is higher than the previous scores
-                for (int i = 0; i < scores.length; i++){
-                    //If the current score is higher than the previous scores
-                    if (currentScore > scores[i]){
-                        //change the score
-                        scores[i] = currentScore;
-                        break;
-                    }
-                }
-
                 //To move to the Score screen
                 i = new Intent(getContext(), ScoreActivity.class);
                 //Put the scores in
                 i.putExtra("currentScore",currentScore);
-                i.putExtra("scores", scores);
                 //Start the score activity
                 startActivity(i);
                 gameOver = false;
                 finish();
             }
 
+            //If the player gains a point
             if (gainPoint){
+                //Set the new level
                 nextLevel();
                 gainPoint = false;
             }
@@ -222,6 +211,7 @@ public class GameActivity extends AppCompatActivity {
                 gainTargetSize = false;
             }
 
+            //If the user collects gain speed ball
             if (gainSpeed){
                 gainSpeed = false;
                 currSpeed = true;
@@ -267,6 +257,8 @@ public class GameActivity extends AppCompatActivity {
                 //Remove the target so the player doesnt get any more points
                 target.remove();
                 gainPoint = true;
+                //Play sound
+                mp.start();
                 //Increase the score
                 currentScore++;
                 currentLevel++;
@@ -276,6 +268,8 @@ public class GameActivity extends AppCompatActivity {
                 //Check if collision occurred with obstacle
                 if (player.collisionDetection(obstacle)){
                     obstacle.remove();
+                    //Play sound
+                    mp.start();
                     //Stops the player
                     increaseXby = 0;
                     increaseYby = 0;
@@ -290,15 +284,18 @@ public class GameActivity extends AppCompatActivity {
             if (player.collisionDetection(obstacleIncreaseTarget)){
                 //Remove the obstacle so the game doesnt keep hitting it
                 obstacleIncreaseTarget.remove();
+                mp.start();
                 gainTargetSize = true;
             }
 
             if (player.collisionDetection(obstacleIncreaseSpeed)){
                 obstacleIncreaseSpeed.remove();
+                mp.start();
             }
 
             if (player.collisionDetection(obstacleIncreasePlaySize)){
                 obstacleIncreasePlaySize.remove();
+                mp.start();
                 gainPlayerSize = true;
             }
 
@@ -322,7 +319,7 @@ public class GameActivity extends AppCompatActivity {
             obstacleIncreaseSpeed.draw(canvas);
             obstacleIncreasePlaySize.draw(canvas);
             target.draw(canvas);
-            counter++;
+            counter++; //Increase the counter for the speed
             //Create loop
             invalidate();
         }

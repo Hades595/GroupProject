@@ -7,12 +7,15 @@
     android:background="@color/default_primary"
     tools:context=".MainActivity">
 
+    <!--Simple logo and button layout-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="5">
 
+        <!-- For the Logo-->
 
         <ImageView
             android:layout_width="match_parent"
@@ -25,6 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2">
+
+            <!--Image button to join the game-->
 
             <ImageButton
                 android:id="@+id/buttonStart"
@@ -42,6 +47,8 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Creator's names -->
 
         <TextView
             android:layout_width="wrap_content"
