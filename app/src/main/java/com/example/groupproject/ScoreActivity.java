@@ -1,43 +1,58 @@
 package com.example.groupproject;
-import static com.example.groupproject.GameActivity.GraphicsView.MY_PREFS_NAME;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextClock;
 import android.widget.TextView;
-
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ScoreActivity extends AppCompatActivity {
+
+    public static int[] scoreArrayDup = new int[5];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
 
-        Bundle i = getIntent().getExtras();
-        int currentScore = i.getInt("currentScore");
-        //int[] scoreArrayDup = i.getIntArray("scores"); //this contains the last 5 scores. NOT CURRENT SCORE
-        int[] scoreArrayDup = new int[5];
+        //Remove the action bar
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.hide();
 
-        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        scoreArrayDup[0] = prefs.getInt("0", 0);
-        scoreArrayDup[1] = prefs.getInt("1", 0);
-        scoreArrayDup[2] = prefs.getInt("2", 0);
-        scoreArrayDup[3] = prefs.getInt("3", 0);
-        scoreArrayDup[4] = prefs.getInt("4", 0);
+        //Set immersive mode, since user will be clicking a lot
+        int uiOptions = View. SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View. SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+
+        Intent intent = getIntent();
+        int currentScore = intent.getIntExtra("currentScore", 0);
+
+        for (int j = 0; j < scoreArrayDup.length; j++){
+            if (currentScore > scoreArrayDup[j]){
+                //If it is outside of the index delete
+                if (j == 5){
+                    //change the score
+                    scoreArrayDup[j] = currentScore;
+                }
+                //Move the previous score down one
+                int temp = scoreArrayDup[j];
+                scoreArrayDup[j+1] = temp;
+                //change the score
+                scoreArrayDup[j] = currentScore;
+                break;
+            }
+        }
+
+        //int[] scoreArrayDup = i.getIntArray("scores"); //this contains the last 5 scores. NOT CURRENT SCORE
+        //int[] scoreArrayDup = new int[5];
 
 
         TextView latestScore = (TextView) findViewById(R.id.scoreText);
@@ -65,20 +80,7 @@ public class ScoreActivity extends AppCompatActivity {
         ListView listView = (ListView)findViewById(R.id.bestFiveScores);
         listView.setAdapter(arrayAdapter);
 
-
-
-        //Remove the action bar
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.hide();
-
-        //Set immersive mode, since user will be clicking a lot
-        int uiOptions = View. SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View. SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        getWindow().getDecorView().setSystemUiVisibility(uiOptions);
     }
-
-
 
 
     //When the user clicks the retry button //we want a fresh version of gameActivity.

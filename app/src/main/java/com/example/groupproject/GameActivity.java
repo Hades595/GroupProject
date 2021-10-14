@@ -182,7 +182,6 @@ public class GameActivity extends AppCompatActivity {
         }
 
         int counter = 0;
-        public static final String MY_PREFS_NAME = "Scoreboard";
 
         @Override
         protected void onDraw(Canvas canvas) {
@@ -201,14 +200,6 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
 
-                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                editor.putInt("0", scores[0]);
-                editor.putInt("1", scores[1]);
-                editor.putInt("2", scores[2]);
-                editor.putInt("3", scores[3]);
-                editor.putInt("4", scores[4]);
-
-                editor.apply();
                 //To move to the Score screen
                 i = new Intent(getContext(), ScoreActivity.class);
                 //Put the scores in
