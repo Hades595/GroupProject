@@ -17,7 +17,8 @@ public class ScoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_score);
 
         Intent i = getIntent();
-        ArrayList scores =  i.getParcelableExtra("scores");
+        ArrayList scores =  i.getParcelableExtra("scores"); //the scores from the game
+
 
         //Remove the action bar
         ActionBar actionbar = getSupportActionBar();
@@ -29,5 +30,17 @@ public class ScoreActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(uiOptions);
 
+    }
+
+
+
+    //When the user clicks the retry button //we want a fresh version of gameActivity.
+    public void onClickRetry(View v){
+        //Debugging
+        //Toast.makeText(this, "Message", Toast.LENGTH_SHORT).show();
+
+        //Start the list activity
+        Intent i = new Intent(this, GameActivity.class);
+        startActivity(i);
     }
 }
