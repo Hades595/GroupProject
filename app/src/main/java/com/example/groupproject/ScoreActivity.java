@@ -32,6 +32,10 @@ public class ScoreActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(uiOptions);
 
+        //For displaying the scores
+        TextView latestScore = (TextView) findViewById(R.id.scoreText);
+        ImageView overBanner = (ImageView) findViewById(R.id.gameOverBanner);
+
         //Get the value from the last activity
         Intent intent = getIntent();
         int currentScore = intent.getIntExtra("currentScore", 0);
@@ -40,32 +44,30 @@ public class ScoreActivity extends AppCompatActivity {
         for (int j = 0; j < scoreArrayDup.length; j++){
             //Check if it is larger than the current value
             if (currentScore > scoreArrayDup[j]){
+                if(j == 0){
+                    overBanner.setImageResource(R.drawable.highscorebanner);
+                }else{
+                    overBanner.setImageResource(R.drawable.gameoverbannerred);
+                }
+
                 //If it is outside of the index delete
                 if (j == 5) {
                     //change the score
                     scoreArrayDup[j] = currentScore;
                 }
+
                 //Move the previous score down one
                 int temp = scoreArrayDup[j];
                 scoreArrayDup[j+1] = temp;
                 //change the score
                 scoreArrayDup[j] = currentScore;
+
                 break;
             }
         }
 
-        //For displaying the scores
-        TextView latestScore = (TextView) findViewById(R.id.scoreText);
-        ImageView overBanner = (ImageView) findViewById(R.id.gameOverBanner);
-
         latestScore.setText(currentScore + "");
 
-        //If the current score is a new high score
-        if (currentScore > scoreArrayDup[0]) {
-            overBanner.setImageResource(R.drawable.highscorebanner);
-        } else {
-            overBanner.setImageResource(R.drawable.gameoverbannerred);
-        }
 
         //Listview population to show best 5 scores
         //first make an array of strings using our integer array
