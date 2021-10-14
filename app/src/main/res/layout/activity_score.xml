@@ -4,11 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/default_primary">
+    android:background="@color/default_primary"
+    tools:context=".ScoreActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_layout_graphicsScore"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="5">
+
+        <!--GAME OVER banner -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:src="@drawable/gameoverbannerred" />
+
+        <!--Text to display current Score achieved -->
+
+
+        <!--Text to show highest score-->
+
+
+        <!--If new high score, display this banner-->
+
+
+        <!--Listview to show top 5 scores achieved-->
+
+
+        <!--need a RETRY button to activate from a fresh version of gameActivity-->
+
+
+        <ImageButton
+            android:id="@+id/buttonStart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:background="@null"
+            android:onClick="onClickRetry"
+            android:padding="5dp"
+            android:src="@drawable/buttonretryselector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

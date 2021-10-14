@@ -203,6 +203,7 @@ public class GameActivity extends AppCompatActivity {
                 //Start the score activity
                 startActivity(i);
                 gameOver = false;
+                finish();
             }
 
             if (gainPoint){
