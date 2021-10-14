@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -181,6 +182,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         int counter = 0;
+        public static final String MY_PREFS_NAME = "Scoreboard";
 
         @Override
         protected void onDraw(Canvas canvas) {
@@ -192,10 +194,21 @@ public class GameActivity extends AppCompatActivity {
                 //check if the current score is higher than the previous scores
                 for (int i = 0; i < scores.length; i++){
                     //If the current score is higher than the previous scores
-                    if (currentScore > scores[i])
+                    if (currentScore > scores[i]){
                         //change the score
                         scores[i] = currentScore;
+                        break;
+                    }
                 }
+
+                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                editor.putInt("0", scores[0]);
+                editor.putInt("1", scores[1]);
+                editor.putInt("2", scores[2]);
+                editor.putInt("3", scores[3]);
+                editor.putInt("4", scores[4]);
+
+                editor.apply();
                 //To move to the Score screen
                 i = new Intent(getContext(), ScoreActivity.class);
                 //Put the scores in
@@ -355,7 +368,7 @@ public class GameActivity extends AppCompatActivity {
         actionbar.hide();
 
         //Set immersive mode, since user will be clicking a lot
-        int uiOptions = View. SYSTEM_UI_FLAG_IMMERSIVE
+        int uiOptions = View. SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View. SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(uiOptions);
